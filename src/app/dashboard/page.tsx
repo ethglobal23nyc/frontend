@@ -11,12 +11,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAccount } from "wagmi";
 
-interface SponsorItem {
+export interface SponsorItem {
   contractAddress: string;
   name: string;
   categories: string[];

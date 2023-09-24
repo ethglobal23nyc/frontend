@@ -58,7 +58,7 @@ export default function Page() {
   }
 
   return (
-    <div className="flex flex-col py-2 h-full container mx-auto pt-24">
+    <div className="flex flex-col py-2 h-full container mx-auto pt-24 ">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
