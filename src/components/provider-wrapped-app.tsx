@@ -9,7 +9,7 @@ import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { arbitrum, mainnet, polygon, filecoin } from "wagmi/chains";
 
 const chains = [arbitrum, mainnet, polygon, filecoin];
-const projectId = "500baad82f2812145feb7e023ea0c32c";
+const projectId = process.env.walletConnectProjectId!;
 
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })]);
 const wagmiConfig = createConfig({
