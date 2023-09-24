@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Table,
   TableBody,
@@ -7,6 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useAccount } from "wagmi";
 
 interface SponsorItem {
   name: string;
@@ -20,9 +25,18 @@ const fakeData: SponsorItem[] = [
 ];
 
 export default function Page() {
+  const router = useRouter();
+  const { address, isConnected } = useAccount();
+
+  // useEffect(() => {
+  //   if (!isConnected) {
+  //     router.push("/");
+  //   }
+  // }, []);
+
   return (
     <div className="flex flex-col min-h-screen py-2">
-      <h1 className="font-bold text-6xl pl-10 pt-8">Data Marketplace</h1>
+      <h1 className="font-bold text-6xl pl-20 pt-10">Data Marketplace</h1>
       <main className="flex flex-col flex-1 py-20 px-20 text-center">
         <Table className="w-3/6">
           <TableCaption>Open Sponsor Models</TableCaption>
