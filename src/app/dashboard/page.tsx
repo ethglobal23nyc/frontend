@@ -46,11 +46,15 @@ export default function Page() {
   //   }
   // }, []);
 
+  console.log(selectedCategory);
   return (
     <div className="flex flex-col min-h-screen py-2">
       <h1 className="font-bold text-6xl pl-20 pt-10">Data Marketplace</h1>
       <main className="flex flex-col flex-1 py-20 px-20 text-center">
-        <CategorySearch categories={getCategories(fakeData)} />
+        <CategorySearch
+          categories={getCategories(fakeData)}
+          handleSelectedCategory={setSelectedCategory}
+        />
         <Table className="w-3/6">
           <TableCaption>Open Sponsor Models</TableCaption>
           <TableHeader>
@@ -61,13 +65,27 @@ export default function Page() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {fakeData.map((item, idx) => (
-              <TableRow key={idx}>
-                <TableCell className="font-medium">{item.name}</TableCell>
-                <TableCell>{item.categories.join(", ")}</TableCell>
-                <TableCell className="text-right">{item.bounty}</TableCell>
-              </TableRow>
-            ))}
+            {fakeData.map((item, idx) => {
+              if (item.categories.includes(selectedCategory)) {
+                return (
+                  <TableRow key={idx}>
+                    <TableCell className="font-medium">{item.name}</TableCell>
+                    <TableCell>{item.categories.join(", ")}</TableCell>
+                    <TableCell className="text-right">{item.bounty}</TableCell>
+                  </TableRow>
+                );
+              } else {
+                return null;
+              }
+            })}
+            {!selectedCategory &&
+              fakeData.map((item, idx) => (
+                <TableRow key={idx}>
+                  <TableCell className="font-medium">{item.name}</TableCell>
+                  <TableCell>{item.categories.join(", ")}</TableCell>
+                  <TableCell className="text-right">{item.bounty}</TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </main>

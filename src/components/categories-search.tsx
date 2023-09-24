@@ -18,7 +18,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function CategorySearch({ categories }: { categories: string[] }) {
+export function CategorySearch({
+  categories,
+  handleSelectedCategory,
+}: {
+  categories: string[];
+  handleSelectedCategory: (category: string) => void;
+}) {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState("");
 
@@ -33,7 +39,7 @@ export function CategorySearch({ categories }: { categories: string[] }) {
         >
           {value
             ? categories.find((category) => category === value)
-            : "Select framework..."}
+            : "Select category..."}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -47,6 +53,9 @@ export function CategorySearch({ categories }: { categories: string[] }) {
                 key={category}
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? "" : currentValue);
+                  handleSelectedCategory(
+                    currentValue === value ? "" : currentValue
+                  );
                   setOpen(false);
                 }}
               >
