@@ -13,11 +13,11 @@ export default function Home() {
 
   const { address, isConnected } = useAccount();
 
-  useEffect(() => {
-    if (isConnected) {
-      router.push("/dashboard");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (isConnected) {
+  //     router.push("/dashboard");
+  //   }
+  // }, [isConnected, router]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
