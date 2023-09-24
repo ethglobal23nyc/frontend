@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import { cn } from "@/lib/utils"
-import { format } from "date-fns"
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +18,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "@radix-ui/react-popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@radix-ui/react-popover";
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { Calendar } from "@/components/ui/calendar";
 import React from "react";
@@ -29,19 +33,18 @@ const formSchema = z.object({
   }),
   datatype: z.string(),
   expiration: z.date(),
-  model: z.string()
+  model: z.string(),
 });
 
 export default function Page() {
-
-  const [date, setDate] = React.useState<Date>()
+  const [date, setDate] = React.useState<Date>();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
       datatype: "",
-      expiration: new Date,
-      model: ""
+      expiration: new Date(),
+      model: "",
     },
   });
 
@@ -53,7 +56,7 @@ export default function Page() {
   }
 
   return (
-    <Form {...form} className="small">
+    <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
@@ -82,37 +85,37 @@ export default function Page() {
                 <Input placeholder="Health Data" {...field} />
               </FormControl>
               <FormDescription>
-                The kind of data you'd like constituents to provide.
+                The kind of data you&apos;d like constituents to provide.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-      <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant={"outline"}
-          className={cn(
-            "w-[280px] justify-start text-left font-normal",
-            !date && "text-muted-foreground"
-          )}
-        >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          initialFocus
-        />
-      </PopoverContent>
-    </Popover>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "w-[280px] justify-start text-left font-normal",
+                !date && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {date ? format(date, "PPP") : <span>Pick a date</span>}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
 
-    <FormField
+        <FormField
           control={form.control}
           name="model"
           render={({ field }) => (
