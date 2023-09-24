@@ -1,3 +1,5 @@
+"use client";
+
 import RecentContributions from "@/components/recent-contributions";
 import {
   Card,

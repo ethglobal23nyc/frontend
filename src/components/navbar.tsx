@@ -1,3 +1,5 @@
+"use client";
+
 import { Web3Button } from "@web3modal/react";
 import Link from "next/link";
 
