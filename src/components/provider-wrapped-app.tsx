@@ -7,6 +7,7 @@ import {
 import { Web3Button, Web3Modal } from "@web3modal/react";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { arbitrum, mainnet, polygon, filecoin } from "wagmi/chains";
+import Navbar from "./navbar";
 
 const chains = [arbitrum, mainnet, polygon, filecoin];
 const projectId = process.env.walletConnectProjectId!;
@@ -26,10 +27,11 @@ export default function ProviderWrappedApp({
 }) {
   return (
     <>
+      <Navbar />
       <WagmiConfig config={wagmiConfig}>{children}</WagmiConfig>
-      <div className="absolute top-10 right-10">
+      {/* <div className="absolute top-10 right-10">
         <Web3Button />
-      </div>
+      </div> */}
       <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
     </>
   );

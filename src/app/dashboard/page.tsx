@@ -1,6 +1,7 @@
 "use client";
 
 import { CategorySearch } from "@/components/categories-search";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -10,19 +11,31 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 
 interface SponsorItem {
+  contractAddress: string;
   name: string;
   categories: string[];
   bounty: number;
 }
 
 const fakeData: SponsorItem[] = [
-  { name: "hello kitty", categories: ["cat", "kitty"], bounty: 100 },
-  { name: "dogs", categories: ["dog", "puppy"], bounty: 200 },
+  {
+    contractAddress: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
+    name: "hello kitty",
+    categories: ["cat", "kitty"],
+    bounty: 100,
+  },
+  {
+    contractAddress: "0x71C7656EC7ab88b098defB751B7401cae6d8976F",
+    name: "dogs",
+    categories: ["dog", "puppy"],
+    bounty: 200,
+  },
 ];
 
 const getCategories = (data: SponsorItem[]): string[] => {
@@ -48,14 +61,14 @@ export default function Page() {
 
   console.log(selectedCategory);
   return (
-    <div className="flex flex-col min-h-screen py-2">
+    <div className="flex flex-col container pt-24 py-2">
       <h1 className="font-bold text-6xl pl-20 pt-10">Data Marketplace</h1>
       <main className="flex flex-col flex-1 py-20 px-20 text-center">
         <CategorySearch
           categories={getCategories(fakeData)}
           handleSelectedCategory={setSelectedCategory}
         />
-        <Table className="w-3/6">
+        <Table className="">
           <TableCaption>Open Sponsor Models</TableCaption>
           <TableHeader>
             <TableRow>
@@ -80,7 +93,13 @@ export default function Page() {
             })}
             {!selectedCategory &&
               fakeData.map((item, idx) => (
-                <TableRow key={idx}>
+                <TableRow
+                  key={idx}
+                  className="cursor-pointer"
+                  onClick={() => {
+                    router.push(`/contract/${item.contractAddress}`);
+                  }}
+                >
                   <TableCell className="font-medium">{item.name}</TableCell>
                   <TableCell>{item.categories.join(", ")}</TableCell>
                   <TableCell className="text-right">{item.bounty}</TableCell>
