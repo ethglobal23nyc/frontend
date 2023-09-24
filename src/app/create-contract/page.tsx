@@ -32,7 +32,9 @@ const formSchema = z.object({
     message: "Username must be at least 2 characters.",
   }),
   datatype: z.string(),
-  expiration: z.date(),
+  expiration: z.date({
+    required_error: "An expiration date is required.",
+  }),
   model: z.string(),
 });
 
@@ -43,7 +45,7 @@ export default function Page() {
     defaultValues: {
       username: "",
       datatype: "",
-      expiration: new Date(),
+      expiration: date,
       model: "",
     },
   });
@@ -56,83 +58,152 @@ export default function Page() {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
+    <div className="flex flex-col py-2 h-full max-w-5xl mx-auto">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input placeholder="pepehands" {...field} />
+                </FormControl>
+                <FormDescription>
+                  This is your public display name.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="datatype"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Requested Data Type</FormLabel>
+                <FormControl>
+                  <Input placeholder="Health Data" {...field} />
+                </FormControl>
+                <FormDescription>
+                  The kind of data you&apos;d like constituents to provide.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="expiration"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Expiration Date</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-[240px] pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date > new Date() || date < new Date("1900-01-01")
+                      }
+                      initialFocus
+                      className="bg-primary-foreground"
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormDescription>
+                  Your expiration date is when the contract will be closed.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {/* <FormField
           control={form.control}
-          name="username"
+          expiration="expiration"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="pepehands" {...field} />
-              </FormControl>
+            <FormItem className="flex flex-col">
+              <FormLabel>Expiration date</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[240px] pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value ? (
+                        format(field.value, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={(date) =>
+                      date > new Date() || date < new Date("1900-01-01")
+                    }
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
               <FormDescription>
-                This is your public display name.
+                Your date of birth is used to calculate your age.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
-        <FormField
-          control={form.control}
-          name="datatype"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Requested Data Type</FormLabel>
-              <FormControl>
-                <Input placeholder="Health Data" {...field} />
-              </FormControl>
-              <FormDescription>
-                The kind of data you&apos;d like constituents to provide.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="model"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>ML Model IPFS address</FormLabel>
+                <FormControl>
+                  <Input placeholder="https://ipfs.io/ipfs/..." {...field} />
+                </FormControl>
+                <FormDescription>
+                  Add a link to where your ML model is stored on IPFS.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant={"outline"}
-              className={cn(
-                "w-[280px] justify-start text-left font-normal",
-                !date && "text-muted-foreground"
-              )}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {date ? format(date, "PPP") : <span>Pick a date</span>}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
-            <Calendar
-              mode="single"
-              selected={date}
-              onSelect={setDate}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
-
-        <FormField
-          control={form.control}
-          name="model"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>ML Model IPFS address</FormLabel>
-              <FormControl>
-                <Input placeholder="https://ipfs.io/ipfs/..." {...field} />
-              </FormControl>
-              <FormDescription>
-                Add a link to where your ML model is stored on IPFS.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        {/* <FormField
+          {/* <FormField
           control={form.control}
           name="expiration"
           render={({ field }) => (
@@ -149,8 +220,9 @@ export default function Page() {
           )}
         /> */}
 
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+          <Button type="submit">Submit</Button>
+        </form>
+      </Form>
+    </div>
   );
 }
